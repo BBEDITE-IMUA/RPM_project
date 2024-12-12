@@ -1,0 +1,62 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-13 21:52+0300\n"
+"PO-Revision-Date: 2024-11-13 12:13+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: constants.py:6
+msgid "Let's start 🚀"
+msgstr "Давай начнем 🚀"
+
+#: constants.py:8
+msgid "✅ I agree"
+msgstr "✅ Я принимаю"
+
+#: constants.py:10
+msgid "❌ I disagree"
+msgstr "❌ Отказываюсь"
+
+#: constants.py:12
+msgid "📜 Terms of service"
+msgstr "📜 Условия"
+
+#: texts.py:4
+msgid ""
+"👋 <b>Hello, {user}!</b>\n"
+"\n"
+"Here you can buy a <b>VPN</b> subscription 🛡️\n"
+"Tap the button below this message to continue ⬇️"
+msgstr ""
+"👋 <b>Привет, {user}!</b>\n"
+"\n"
+"Здесь ты сможешь купить <b>VPN</b> подписку 🛡️\n"
+"Нажми на кнопку ниже, чтобы начать ⬇️"
+
+#: texts.py:11
+msgid ""
+"📜 <b>Before we begin we need to make some agreements 📜</b>\n"
+"\n"
+"After reading, click <b>\"✅ I agree\"</b> to continue.\n"
+"\n"
+msgstr ""
+"Перед тем как мы начнем"
+"📜 <b>пожалуйста, ознакомьтесь с условиями 📜</b>\n"
+"\n"
+"после прочтения нажмите <b>\"✅ Я принимаю\"</b>, чтобы продолжить.\n"
+"\n"
+

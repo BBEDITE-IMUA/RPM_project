@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:13.2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5430:5432"
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  # redis:
+  #   image: redis/redis-stack:latest
+  #   ports:
+  #     - "6379:6379"
+
+networks:
+ sirius:
+   external: true

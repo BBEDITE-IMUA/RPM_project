@@ -1,0 +1,61 @@
+# English translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-13 21:52+0300\n"
+"PO-Revision-Date: 2024-11-13 12:14+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: constants.py:6
+msgid "Let's start 🚀"
+msgstr ""
+
+#: constants.py:8
+msgid "✅ I agree"
+msgstr ""
+
+#: constants.py:10
+msgid "❌ I disagree"
+msgstr ""
+
+#: constants.py:12
+msgid "📜 Terms of service"
+msgstr ""
+
+#: texts.py:4
+msgid ""
+"👋 <b>Hello, {user}!</b>\n"
+"\n"
+"Here you can buy a <b>VPN</b> subscription 🛡️\n"
+"Tap the button below this message to continue ⬇️"
+msgstr ""
+
+#: texts.py:11
+msgid ""
+"📜 <b>Before we begin we need to make some agreements 📜</b>\n"
+"\n"
+"After reading, click <b>\"✅ I agree\"</b> to continue.\n"
+"\n"
+msgstr ""
+
+#~ msgid "hello, {name}!"
+#~ msgstr ""
+
+#~ msgid "Buy subscription 💰"
+#~ msgstr ""
+
+#~ msgid "Let's start 🚀"
+#~ msgstr ""
+
