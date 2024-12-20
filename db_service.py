@@ -2,8 +2,8 @@ import aio_pika
 import asyncio
 import json
 from db import AsyncSessionLocal
-from crud import register_user
-from config import settings
+from crud import register_user, is_user_exist
+from VpnKeySellerBot.config.settings import settings
 from queue_name import USER_REGISTRATION
 
 

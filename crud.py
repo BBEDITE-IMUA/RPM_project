@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import User
+from VpnKeySellerBot.src.model.models import User
 
 async def register_user(session: AsyncSession, user_id: int, language: str):
     existing_user = await session.execute(select(User).filter(User.user_id == user_id))
@@ -15,7 +15,6 @@ async def register_user(session: AsyncSession, user_id: int, language: str):
 
 
 async def get_user_language(session: AsyncSession, user_id: int):
-    
     result = await session.execute(select(User).filter(User.user_id == int(user_id)))
     user = result.scalar_one_or_none()
     return user.language if user else None

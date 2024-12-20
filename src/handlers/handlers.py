@@ -1,7 +1,6 @@
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
-import texts
-import keyboards
+from src.templates import texts, keyboards
 from crud import register_user
 from db import AsyncSessionLocal
 from bot_rabbitmq_sender import send_to_queue

@@ -4,13 +4,14 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram import Bot, Dispatcher
 from aiogram.utils.i18n import I18n
 from aiogram.fsm.storage.memory import MemoryStorage
-from middlewares import CustomI18nMiddleware
-from config import settings
-import constants
-from routers import user_router
+from VpnKeySellerBot.src.middlewares import CustomI18nMiddleware
+from VpnKeySellerBot.config.settings import settings
+import VpnKeySellerBot.src.templates.constants as constants
+from VpnKeySellerBot.src.api.routers import user_router
 from db import init_db
 
 i18n = I18n(path=constants.LOCALES_PATH)
+
 
 async def main():
 

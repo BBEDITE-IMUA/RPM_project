@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart, StateFilter
-import handlers
-import constants
+import VpnKeySellerBot.src.handlers.handlers as handlers
+import VpnKeySellerBot.src.templates.constants as constants
 
 user_router = Router()
 

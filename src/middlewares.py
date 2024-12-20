@@ -2,7 +2,7 @@ from aiogram.utils.i18n.middleware import I18nMiddleware
 from aiogram.fsm.context import FSMContext
 from db import AsyncSessionLocal
 from crud import get_user_language
-from constants import AVALIABLE_LANGUAGES
+from VpnKeySellerBot.src.templates.constants import AVALIABLE_LANGUAGES
 from aiogram.types import Message
 
 class CustomI18nMiddleware(I18nMiddleware):
