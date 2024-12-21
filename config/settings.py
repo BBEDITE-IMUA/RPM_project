@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     RADIS_HOST: str
     RADIS_PORT: int
 
-    USER_QUEUE: str = 'user_keys.{user_id}'
+    USER_QUEUE: str = 'user_queue.{user_id}'
 
     @property
     def db_url(self) -> str:
