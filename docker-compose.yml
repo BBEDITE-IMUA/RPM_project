@@ -13,13 +13,44 @@ services:
   rabbitmq:
     image: rabbitmq:3.13.7-management
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
-  # redis:
-  #   image: redis/redis-stack:latest
-  #   ports:
-  #     - "6379:6379"
+  redis:
+      image: redis:6.2.4
+      ports:
+        - "6379:6379"
+
+  bot:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: uvicorn src.app:create_app --factory --host 0.0.0.0 --port 8001 --workers=1
+    ports:
+      - "8080:8001"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/code
+  
+  consumer:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: uvicorn consumer.web_app:create_app --factory --host 0.0.0.0 --port 8010 --workers=1
+    ports:
+      - "8090:8010"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .:/code
 
 networks:
  sirius:

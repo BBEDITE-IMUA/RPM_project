@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
-    RADIS_HOST: str
-    RADIS_PORT: int
+    REDIS_HOST: str
+    REDIS_PORT: int
 
     USER_QUEUE: str = 'user_queue.{user_id}'
 
