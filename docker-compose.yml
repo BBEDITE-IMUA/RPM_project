@@ -1,14 +1,19 @@
 version: '3.9'
 
 services:
-  postgres:
+  db:
     image: postgres:13.2
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
     ports:
-      - "5430:5432"
+      - "5555:5432"
+    command: [ "postgres", "-c", "log_statement=all", "-c", "log_destination=stderr" ]
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "postgres" ]
+      interval: 1s
+      retries: 20
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
 
   rabbitmq:
     image: rabbitmq:3.13.7-management

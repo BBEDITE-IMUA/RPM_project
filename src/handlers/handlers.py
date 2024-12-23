@@ -1,46 +1,99 @@
-from aiogram.types import Message, CallbackQuery
+import aio_pika
+import msgpack
 from aiogram.fsm.context import FSMContext
-from src.templates import texts, keyboards
+from aiogram.types import CallbackQuery, Message
+
+from config.settings import settings
+from src.storage import rabbit
+from src.templates import keyboards, texts
 
 
-async def start(message: Message, state: FSMContext):
+async def start(message: Message, state: FSMContext) -> None:
+    if not message.from_user:
+        await message.answer('Не удалось получить данные пользователя.')
+        return
+
     user_id = message.from_user.id
-    user_language = message.from_user.language_code or 'en'
+    request_body = {'user_id': user_id, 'action': 'check_user_in_db'}
 
-    # await send_to_queue(USER_REGISTRATION, {'user_id': user_id, 'language': user_language})
+    async with rabbit.channel_pool.acquire() as channel:
+        exchange = await channel.declare_exchange('user_check', aio_pika.ExchangeType.TOPIC, durable=True)
 
-    await message.answer(
-        await texts.get_start_message(
-            user = message.from_user.full_name
-        ),
-        reply_markup = await keyboards.get_start_keyboard()
-    )
+        queue = await channel.declare_queue(settings.USER_QUEUE.format(user_id=user_id), durable=True)
+
+        user_queue = await channel.declare_queue('user_messages', durable=True)
+
+        await user_queue.bind(exchange, 'user_messages')
+
+        await exchange.publish(
+            aio_pika.Message(
+                body=msgpack.packb(request_body)
+            ),
+            routing_key='user_messages'
+        )
+
+        async with queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                async with message.process():
+                    response = msgpack.unpackb(message.body)
+                    break
+
+    if response.get('exists'):
+        await message.answer(
+            await texts.get_start_again_message(user=message.from_user.full_name),
+            reply_markup=await keyboards.get_agree_with_terms_keyboard()
+        )
+    else:
+        await message.answer(
+            await texts.get_start_message(user=message.from_user.full_name),
+            reply_markup=await keyboards.get_start_keyboard()
+        )
 
 
-async def agreement_message(call: CallbackQuery, state: FSMContext):
+async def agreement_message(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_agreement_message(),
         reply_markup = await keyboards.get_agreement_keyboard()
     )
 
 
-# async def agree_with_terms(call: CallbackQuery, state: FSMContext):
-#     async with AsyncSessionLocal() as session:
-#         await register_user(session, call.from_user.id, call.from_user.language_code or 'en')
-#         await call.message.edit_text(
-#             await texts.get_agree_with_terms_message(),
-#             reply_markup = await keyboards.get_agree_with_terms_keyboard()
-#         )
+async def agree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
+    if call.from_user is None:
+        await call.message.answer('Не удалось получить данные о пользователе')
+        return
+    
+    async with rabbit.channel_pool.acquire() as channel:
+        exchange = await channel.declare_exchange('user_actions', aio_pika.ExchangeType.TOPIC, durable=True)
+
+        queue = await channel.declare_queue(settings.USER_QUEUE.format(user_id=call.from_user.id), durable=True)
+
+        user_queue = await channel.declare_queue('user_messages', durable=True)
+
+        
+        await queue.bind(exchange, routing_key=settings.USER_QUEUE.format(user_id=call.from_user.id))
+        await user_queue.bind(exchange, routing_key='user_messages')
+
+        body = {'user_id': call.from_user.id, 'action': 'register_user'}
+
+        await channel.default_exchange.publish(
+            aio_pika.Message(msgpack.packb(body)),
+            routing_key='user_messages',
+        )
+
+    await call.message.edit_text(
+        await texts.get_agree_with_terms_message(),
+        reply_markup = await keyboards.get_agree_with_terms_keyboard()
+    )
 
 
-async def disagree_with_terms(call: CallbackQuery, state: FSMContext):
+async def disagree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_disagree_with_terms_message(),
         reply_markup = await keyboards.get_disagree_with_terms_keyboard()
     )
 
 
-async def start_again(call: CallbackQuery, state: FSMContext):
+async def start_again(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_start_again_message(
             user = call.from_user.full_name
@@ -49,7 +102,7 @@ async def start_again(call: CallbackQuery, state: FSMContext):
     )
 
 
-async def personal_account(call: CallbackQuery, state: FSMContext):
+async def personal_account(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_personal_account_message(),
         reply_markup = await keyboards.get_personal_account_keyboard()
