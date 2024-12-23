@@ -1,4 +1,5 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 import VpnKeySellerBot.src.templates.constants as constants
 
 
@@ -52,6 +53,20 @@ async def get_personal_account_keyboard() -> InlineKeyboardMarkup:
     Keyboard = [
         [
             InlineKeyboardButton(text = str(constants.MY_SUBSCRIPTION_BUTTON_TEXT), callback_data = constants.MY_SUBSCRIPTION_BUTTON_CALLBACK),
+            InlineKeyboardButton(text = str(constants.CHENGE_LANGUAGE_BUTTON_TEXT), callback_data = constants.CHENGE_LANGUAGE_BUTTON_CALLBACK),
+            InlineKeyboardButton(text = str(constants.BY_SUBSCRIPTION_BUTTON_TEXT), callback_data = constants.BY_SUBSCRIPTION_BUTTON_CALLBACK)
+        ]
+    ]
+    return InlineKeyboardMarkup(
+        inline_keyboard = Keyboard
+    )
+
+
+async def change_language_keyboard() -> InlineKeyboardMarkup:
+    Keyboard = [
+        [
+            InlineKeyboardButton(text = str(constants.RUSSIAN_LANGUAGE_BUTTON_TEXT), callback_data = constants.PERSONAL_ACCOUNT_INLINE_BUTTON_CALLBACK),
+            InlineKeyboardButton(text = str(constants.ENGLISH_LANGUAGE_BUTTON_TEXT), callback_data = constants.PERSONAL_ACCOUNT_INLINE_BUTTON_CALLBACK)
         ]
     ]
     return InlineKeyboardMarkup(
