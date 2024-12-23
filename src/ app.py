@@ -46,7 +46,7 @@ def create_app() -> FastAPI:
     app.include_router(router)
     app.add_middleware(CustomI18nMiddleware)
     logger.info(f'Application started, Correlation ID: {correlation_id}')
-    return 
+    return app
 
 
 if __name__ == '__main__':

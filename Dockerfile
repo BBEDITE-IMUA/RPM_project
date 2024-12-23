@@ -1,14 +1,11 @@
-FROM python:3.12-slim
+FROM python:3.11
 
-WORKDIR /app
-
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+WORKDIR /code
 
 COPY . .
 
-EXPOSE 8000
+RUN pip3 install --upgrade  poetry==1.8.3
 
-CMD ["uvicorn", "src.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+RUN python3 -m poetry config virtualenvs.create false \
+    && python3 -m poetry install --no-interaction --no-ansi --without dev \
+    && echo yes | python3 -m poetry cache clear . --all
