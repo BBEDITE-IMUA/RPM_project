@@ -5,7 +5,7 @@ from typing import AsyncIterator
 import uvicorn
 from fastapi import FastAPI
 
-from VpnKeySellerBot.config.settings import settings
+from config.settings import settings
 from src.api.router import router
 from src.bot import bot, dp
 from src.log_config import logging, LOGGING_CONFIG

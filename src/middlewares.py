@@ -1,6 +1,6 @@
 from aiogram.utils.i18n.middleware import I18nMiddleware
 from aiogram.fsm.context import FSMContext
-from VpnKeySellerBot.src.templates.constants import AVALIABLE_LANGUAGES
+from src.templates.constants import AVALIABLE_LANGUAGES
 from aiogram.types import Message
 import aio_pika
 from config.settings import settings

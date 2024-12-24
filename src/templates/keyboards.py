@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-import VpnKeySellerBot.src.templates.constants as constants
+import src.templates.constants as constants
 
 
 async def get_start_keyboard() -> InlineKeyboardMarkup:

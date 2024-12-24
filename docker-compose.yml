@@ -31,6 +31,15 @@ services:
       ports:
         - "6379:6379"
 
+  alembic:
+    build:
+      context: .
+    entrypoint: [ "alembic" ]
+    command: [ "upgrade", "head" ]
+    depends_on:
+      db:
+        condition: service_healthy
+
   bot:
     build:
       dockerfile: Dockerfile
