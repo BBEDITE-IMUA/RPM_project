@@ -1,11 +1,13 @@
-from aiogram.utils.i18n.middleware import I18nMiddleware
-from aiogram.fsm.context import FSMContext
-from src.templates.constants import AVALIABLE_LANGUAGES
-from aiogram.types import Message
 import aio_pika
-from config.settings import settings
 import msgpack
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+from aiogram.utils.i18n.middleware import I18nMiddleware
+
+from config.settings import settings
 from consumer.storage import rabbit
+from src.templates.constants import AVALIABLE_LANGUAGES
+
 
 class CustomI18nMiddleware(I18nMiddleware):
     async def get_supported_language(self, language: str):
@@ -18,9 +20,7 @@ class CustomI18nMiddleware(I18nMiddleware):
         state_data = await state.get_data()
         user_state_language = state_data.get('language')
         if user_state_language:
-            return await self.get_supported_language(
-                user_state_language
-            )
+            return await self.get_supported_language(user_state_language)
 
         if isinstance(event, Message) and event.from_user:
             user_id = event.from_user.id
@@ -30,9 +30,7 @@ class CustomI18nMiddleware(I18nMiddleware):
                 await state.update_data(language=user_language_from_db)
                 return user_language_from_db
 
-            user_device_language = await self.get_supported_language(
-                event.from_user.language_code
-            )
+            user_device_language = await self.get_supported_language(event.from_user.language_code)
             await state.update_data(language=user_device_language)
             return user_device_language
 
@@ -51,10 +49,7 @@ class CustomI18nMiddleware(I18nMiddleware):
             await response_queue.bind(exchange, routing_key=settings.USER_QUEUE.format(user_id=user_id))
             await user_queue.bind(exchange, routing_key='user_messages')
 
-            await exchange.publish(
-                aio_pika.Message(msgpack.packb(request_body)),
-                routing_key='user_messages'
-            )
+            await exchange.publish(aio_pika.Message(msgpack.packb(request_body)), routing_key='user_messages')
 
             async with response_queue.iterator() as queue_iter:
                 async for message in queue_iter:

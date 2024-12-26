@@ -1,4 +1,6 @@
 import asyncio
+import os
+import sys
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
@@ -8,12 +10,9 @@ from fastapi import FastAPI
 from config.settings import settings
 from src.api.router import router
 from src.bot import bot, dp
-from src.log_config import logging, LOGGING_CONFIG
+from src.log_config import LOGGING_CONFIG, logging
 from src.logger import set_correlation_id
 from src.middlewares import CustomI18nMiddleware
-import sys
-import os
-
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '...'))
 

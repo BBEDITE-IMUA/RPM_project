@@ -4,8 +4,8 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 
 from config.settings import settings
-from src.storage.redis import redis_storage
 from src.handlers.routers import user_router
+from src.storage.redis import redis_storage
 
 dp = Dispatcher(storage=RedisStorage(redis=redis_storage))
 default = DefaultBotProperties(parse_mode=ParseMode.HTML)

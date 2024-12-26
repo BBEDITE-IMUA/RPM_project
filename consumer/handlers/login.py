@@ -1,14 +1,12 @@
-import logging.config
 from datetime import datetime
 from typing import Any, Dict
 
 from sqlalchemy.exc import IntegrityError
 
-from consumer.logger import LOGGING_CONFIG, logger
+from consumer.logger import logger
 from consumer.storage.db import async_session
-from src.model.models import User, Languages
+from src.model.models import Languages, User
 
-logger = logging.getLogger(__name__)
 
 async def register_user(body: Dict[str, Any]) -> None:
     logger.info('Accepting a registration request', body)

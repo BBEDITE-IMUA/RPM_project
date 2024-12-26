@@ -1,17 +1,19 @@
+from typing import Any, Dict
+
 import aio_pika
 import msgpack
 from sqlalchemy.future import select
-from typing import Dict, Any
-from src.model.models import Keys
+
 from config.settings import settings
-from consumer.storage import rabbit
 from consumer.logger import logger
+from consumer.storage import rabbit
 from consumer.storage.db import async_session
+from src.model.models import Keys
 
 
 async def get_keys_for_user(body: Dict[str, Any]) -> None:
     logger.info('Get keys for user', body)
-    
+
     user_id = body.get('user_id')
     if not user_id:
         logger.error('Invalid request. Missing user_id')

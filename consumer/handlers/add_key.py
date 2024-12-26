@@ -1,14 +1,12 @@
-import aio_pika
-import msgpack
+from datetime import datetime
+from typing import Any, Dict
+
 from sqlalchemy.exc import IntegrityError
-from typing import Dict, Any
-from src.model.models import Keys, User, Countries
-from config.settings import settings
-from consumer.storage import rabbit
+from sqlalchemy.future import select
+
 from consumer.logger import logger
 from consumer.storage.db import async_session
-from datetime import datetime
-from sqlalchemy.future import select
+from src.model.models import Countries, Keys, User
 
 
 async def add_key_for_user(body: Dict[str, Any]) -> None:
@@ -51,23 +49,3 @@ async def add_key_for_user(body: Dict[str, Any]) -> None:
         except IntegrityError as e:
             logger.error(f'Error during key addition for user {user_id}: {e}')
             await db.rollback()
-
-    # async with rabbit.channel_pool.acquire() as channel:
-    #     exchange = await channel.declare_exchange('user_keys', aio_pika.ExchangeType.TOPIC, durable=True)
-
-    #     queue = await channel.declare_queue(settings.USER_QUEUE.format(user_id=user_id), durable=True)
-
-    #     await queue.bind(exchange, routing_key=settings.USER_QUEUE.format(user_id=user_id))
-
-    #     response_body = {
-    #         'user_id': user_id,
-    #         'key_id': str(new_key.id),
-    #         'expires_at': expires_at.isoformat(),
-    #     }
-
-    #     await exchange.publish(
-    #         aio_pika.Message(msgpack.packb(response_body)),
-    #         routing_key=settings.USER_QUEUE.format(user_id=user_id),
-    #     )
-
-    #     logger.info(f'Sent key for user {user_id}')

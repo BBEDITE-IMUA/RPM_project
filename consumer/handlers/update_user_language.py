@@ -1,18 +1,20 @@
+from typing import Any, Dict
+
 import aio_pika
 import msgpack
 from sqlalchemy.future import select
-from typing import Dict, Any
-from src.model.models import User, Languages
+
 from config.settings import settings
-from consumer.storage import rabbit
 from consumer.logger import logger
+from consumer.storage import rabbit
 from consumer.storage.db import async_session
+from src.model.models import Languages, User
 
 
 async def update_user_language(body: Dict[str, Any]) -> None:
     user_id = body.get('user_id')
     new_language_id = body.get('language_id')
-    
+
     if not user_id or not new_language_id:
         logger.error('Invalid request. Missing user_id or language_id')
         return
@@ -48,7 +50,7 @@ async def update_user_language(body: Dict[str, Any]) -> None:
             'new_language': {
                 'name': language.name,
                 'locale': language.locale,
-            }
+            },
         }
 
     async with rabbit.channel_pool.acquire() as channel:

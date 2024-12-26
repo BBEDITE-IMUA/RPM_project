@@ -10,7 +10,7 @@ from consumer.app import main
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    
+
     task = asyncio.create_task(main())
 
     yield

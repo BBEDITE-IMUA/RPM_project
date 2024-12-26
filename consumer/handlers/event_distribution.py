@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 from consumer.handlers.add_key import add_key_for_user
 from consumer.handlers.check_user_in_db import check_user_in_db

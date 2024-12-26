@@ -1,12 +1,12 @@
 import asyncio
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import async_engine_from_config, AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncConnection, async_engine_from_config
 
+from alembic import context
 from src.model.meta import Base
-from src.model.models import User, Languages, Keys, Countries
+from src.model.models import Countries, Keys, Languages, User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

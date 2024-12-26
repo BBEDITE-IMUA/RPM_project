@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any, Dict, List
 from uuid import UUID, uuid4
 
-from sqlalchemy import String, BigInteger, TIMESTAMP, CheckConstraint, UniqueConstraint, ForeignKey
+from sqlalchemy import TIMESTAMP, BigInteger, CheckConstraint, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.model.meta import Base
@@ -53,9 +53,7 @@ class Keys(Base):
             'expires_at': self.expires_at.isoformat(),
         }
 
-    __table_args__ = (
-        CheckConstraint('created_at < expires_at', name='ck_keys_dates'),
-    )
+    __table_args__ = (CheckConstraint('created_at < expires_at', name='ck_keys_dates'),)
 
 
 class Countries(Base):
@@ -74,9 +72,7 @@ class Countries(Base):
             'iso_code': self.iso_code,
         }
 
-    __table_args__ = (
-        CheckConstraint('length(iso_code) = 2', name='ck_countries_iso_code_length'),
-    )
+    __table_args__ = (CheckConstraint('length(iso_code) = 2', name='ck_countries_iso_code_length'),)
 
 
 class Languages(Base):
@@ -88,6 +84,4 @@ class Languages(Base):
 
     users: Mapped[List['User']] = relationship('User', back_populates='language', cascade='all, delete-orphan')
 
-    __table_args__ = (
-        CheckConstraint('length(locale) > 0', name='ck_languages_locale_length'),
-    )
+    __table_args__ = (CheckConstraint('length(locale) > 0', name='ck_languages_locale_length'),)

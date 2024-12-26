@@ -1,5 +1,6 @@
-from aiogram import Router, F
+from aiogram import F, Router
 from aiogram.filters import CommandStart
+
 import src.handlers.handlers as handlers
 import src.templates.constants as constants
 
@@ -10,7 +11,9 @@ user_router.callback_query.register(handlers.agreement_message, F.data == consta
 user_router.callback_query.register(handlers.agree_with_terms, F.data == constants.AGREE_INLINE_BUTTON_CALLBACK)
 user_router.callback_query.register(handlers.disagree_with_terms, F.data == constants.DISAGREE_INLINE_BUTTON_CALLBACK)
 user_router.callback_query.register(handlers.start_again, F.data == constants.LETS_START_AGAING_INLINE_BUTTON_CALLBACK)
-user_router.callback_query.register(handlers.personal_account, F.data == constants.PERSONAL_ACCOUNT_INLINE_BUTTON_CALLBACK)
+user_router.callback_query.register(
+    handlers.personal_account, F.data == constants.PERSONAL_ACCOUNT_INLINE_BUTTON_CALLBACK
+)
 user_router.callback_query.register(handlers.by_subscription, F.data == constants.BY_SUBSCRIPTION_BUTTON_CALLBACK)
 user_router.callback_query.register(handlers.change_language, F.data == constants.CHENGE_LANGUAGE_BUTTON_CALLBACK)
 user_router.callback_query.register(handlers.my_subscription, F.data == constants.MY_SUBSCRIPTION_BUTTON_CALLBACK)

@@ -1,12 +1,14 @@
+from typing import Any, Dict
+
 import aio_pika
 import msgpack
 from sqlalchemy.future import select
-from typing import Dict, Any
-from src.model.models import User, Languages
+
 from config.settings import settings
-from consumer.storage import rabbit
 from consumer.logger import logger
+from consumer.storage import rabbit
 from consumer.storage.db import async_session
+from src.model.models import Languages, User
 
 
 async def get_user_language(body: Dict[str, Any]) -> None:
@@ -35,7 +37,7 @@ async def get_user_language(body: Dict[str, Any]) -> None:
             'language': {
                 'name': language.name,
                 'locale': language.locale,
-            }
+            },
         }
 
     async with rabbit.channel_pool.acquire() as channel:

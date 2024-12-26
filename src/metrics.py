@@ -21,7 +21,6 @@ BUCKETS = [
 LATENCY = Histogram('latency_seconds_handler', 'Время задержку', labelnames=['handler'], buckets=BUCKETS)
 
 
-
 def track_latency(
     method_name: str,
 ) -> Callable[[Callable[..., Coroutine[Any, Any, Any]]], Callable[..., Coroutine[Any, Any, Any]]]:
