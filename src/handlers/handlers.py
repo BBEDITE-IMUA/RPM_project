@@ -6,8 +6,10 @@ from aiogram.types import CallbackQuery, Message
 from config.settings import settings
 from src.storage import rabbit
 from src.templates import keyboards, texts
+from src.metrics import track_latency, SEND_MESSAGE
 
 
+@track_latency('start')
 async def start(message: Message, state: FSMContext) -> None:
     if not message.from_user:
         await message.answer('Не удалось получить данные пользователя.')
@@ -34,6 +36,8 @@ async def start(message: Message, state: FSMContext) -> None:
             routing_key='user_messages'
         )
 
+        SEND_MESSAGE.inc()
+
         async with queue.iterator() as queue_iter:
             async for message in queue_iter:
                 async with message.process():
@@ -52,6 +56,7 @@ async def start(message: Message, state: FSMContext) -> None:
         )
 
 
+@track_latency('agreement_message')
 async def agreement_message(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_agreement_message(),
@@ -59,6 +64,7 @@ async def agreement_message(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('agree_with_terms')
 async def agree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
     if call.from_user is None:
         await call.message.answer('Не удалось получить данные о пользователе')
@@ -82,12 +88,15 @@ async def agree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
             routing_key='user_messages',
         )
 
+        SEND_MESSAGE.inc()
+
     await call.message.edit_text(
         await texts.get_agree_with_terms_message(),
         reply_markup = await keyboards.get_agree_with_terms_keyboard()
     )
 
 
+@track_latency('disagree_with_terms')
 async def disagree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_disagree_with_terms_message(),
@@ -95,6 +104,7 @@ async def disagree_with_terms(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('start_again')
 async def start_again(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_start_again_message(
@@ -104,6 +114,7 @@ async def start_again(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('personal_account')
 async def personal_account(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_personal_account_message(),
@@ -111,6 +122,7 @@ async def personal_account(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('my_subscription')
 async def my_subscription(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.get_my_subscription_message(),
@@ -118,6 +130,7 @@ async def my_subscription(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('change_language')
 async def change_language(call: CallbackQuery, state: FSMContext) -> None:
     await call.message.edit_text(
         await texts.change_language_message(),
@@ -125,10 +138,12 @@ async def change_language(call: CallbackQuery, state: FSMContext) -> None:
     )
 
 
+@track_latency('choose_ru_language')
 async def choose_ru_language(call: CallbackQuery, state: FSMContext) -> None:
     await update_language(call, 1, state)
 
 
+@track_latency('choose_en_language')
 async def choose_en_language(call: CallbackQuery, state: FSMContext) -> None:
     await update_language(call, 2, state)
     
@@ -157,6 +172,9 @@ async def update_language(call: CallbackQuery, language_id: int, state: FSMConte
             routing_key='user_messages',
         )
 
+        SEND_MESSAGE.inc()
 
+
+@track_latency('by_subscription')
 async def by_subscription(call: CallbackQuery, state: FSMContext) -> None:
     return None
